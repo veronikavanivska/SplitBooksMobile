@@ -13,7 +13,7 @@ public class RegistrationRequest {
         this.username = username;
     }
 
-    // Getters
+
     public String getEmail() {
         return email;
     }
@@ -26,7 +26,7 @@ public class RegistrationRequest {
         return username;
     }
 
-    // Setters
+
     public void setEmail(String email) {
         this.email = email;
     }

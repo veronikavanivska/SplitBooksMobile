@@ -4,13 +4,11 @@ public class LoginResponse {
     private Long userId;
     private String token;
 
-    // Constructor
     public LoginResponse(Long userId, String token) {
         this.userId = userId;
         this.token = token;
     }
 
-    // Getters and Setters
     public Long getUserId() {
         return userId;
     }

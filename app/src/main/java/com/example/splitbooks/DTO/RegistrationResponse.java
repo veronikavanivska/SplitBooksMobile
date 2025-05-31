@@ -1,5 +1,6 @@
 package com.example.splitbooks.DTO;
 
+
 public class RegistrationResponse {
 
     private long userId;

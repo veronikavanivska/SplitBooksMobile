@@ -22,22 +22,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Title -->
+
+    <!-- Username -->
+
     <TextView
         android:id="@+id/register_title"
         android:layout_width="wrap_content"
         android:layout_height="49dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="52dp"
         android:fontFamily="sans-serif-medium"
         android:text="@string/register"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/app_logo"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/app_logo" />
 
-    <!-- Username -->
     <EditText
         android:id="@+id/username_field"
         android:layout_width="0dp"
@@ -101,14 +103,13 @@
             android:id="@+id/eye_icon"
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/eye"
-            android:contentDescription="@string/toggle_password"
             android:clickable="true"
+            android:contentDescription="@string/toggle_password"
             android:focusable="true"
-            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/eye"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="TouchTargetSizeCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -168,5 +169,5 @@
             tools:ignore="TouchTargetSizeCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+

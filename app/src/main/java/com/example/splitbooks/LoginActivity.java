@@ -95,8 +95,6 @@ public class LoginActivity extends AppCompatActivity {
                             JwtManager.saveToken(getApplicationContext(), loginResponse.getToken());
                             Log.d("LoginActivity", "Saved Token: " + loginResponse.getToken());
 
-//                            String userToken = loginResponse.getToken();
-//                            long userId = loginResponse.getUserId();
                             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
                             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);

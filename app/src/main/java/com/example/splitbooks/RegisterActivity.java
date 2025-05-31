@@ -99,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Log.d("RegistrationActivity", "Saved Token: " + registrationResponse.getToken());
                             Toast.makeText(RegisterActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
 
-                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                            Intent intent = new Intent(RegisterActivity.this, GenreActivity.class);
                             startActivity(intent);
                             finish();
                         }
