@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base Colors -->
-    <color name="colorWhite">#FFFFFF</color>      <!-- Pure White -->
-    <color name="colorBlack">#121212</color>      <!-- Soft Black / Background -->
 
-    <!-- Gray Variants -->
-    <color name="colorGrayLight">#F5F5F5</color>  <!-- Light Gray (backgrounds) -->
-    <color name="colorGrayMedium">#9E9E9E</color> <!-- Medium Gray (text/input borders) -->
-    <color name="colorGrayDark">#424242</color>   <!-- Dark Gray (headings/buttons) -->
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#121212</color>
+
+
+    <color name="colorGrayLight">#E0E0E0</color>
+    <color name="colorGrayMedium">#888888</color>
+    <color name="colorGrayDark">#424242</color>
 
     <color name="dark_green">#006400</color>
 
+    <color name="light_green_checked">#A5D6A7</color>
+    <color name="light_green_pressed">#81C784</color>
 </resources>

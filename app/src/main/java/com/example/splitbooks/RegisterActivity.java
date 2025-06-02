@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.splitbooks.DTO.RegistrationRequest;
-import com.example.splitbooks.DTO.RegistrationResponse;
+import com.example.splitbooks.DTO.request.RegistrationRequest;
+import com.example.splitbooks.DTO.response.RegistrationResponse;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
 import com.example.splitbooks.network.JwtManager;

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ProfileValue">
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="ProfileLabel">
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:textColor">#444444</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+</resources>

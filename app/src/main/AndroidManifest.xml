@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.YourApp"
+        android:theme="@style/Theme.SplitBook"
         tools:targetApi="31">
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity"/>
@@ -24,6 +24,12 @@
         <activity android:name=".LanguageActivity" />
         <activity android:name=".ReadingFormatActivity" />
         <activity android:name=".ProfileSetupActivity" />
+        <activity android:name=".HomePageActivity" />
+        <activity android:name=".PublicProfileActivity" />
+        <activity android:name=".EditGenresActivity" />
+        <activity android:name=".EditLanguageActivity" />
+        <activity android:name=".EditReadingFormatActivity" />
+        <activity android:name=".EditProfileActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

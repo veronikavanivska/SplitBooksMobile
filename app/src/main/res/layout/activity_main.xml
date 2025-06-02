@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/colorWhite"
     android:padding="24dp"
     tools:context=".MainActivity">
 
@@ -32,18 +32,13 @@
         android:fontFamily="sans-serif-medium"
         android:text="Welcome to SplitBooks"
         android:textAlignment="center"
-        android:textColor="#000000"
+        android:textColor="@color/colorBlack"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_logo" />
 
-    <!-- Slogan -->
-
-    <!-- Tagline -->
-
-    <!-- Get Started Button -->
 
     <TextView
         android:id="@+id/logo_slogan"
@@ -85,12 +80,12 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="84dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="#000000"
+        android:backgroundTint="@color/colorBlack"
         android:fontFamily="sans-serif-medium"
         android:padding="16dp"
         android:text="Get Started"
         android:textAllCaps="false"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorWhite"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

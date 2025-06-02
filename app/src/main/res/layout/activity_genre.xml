@@ -5,14 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:padding="24dp">
+    android:background="@color/colorWhite"
+    android:padding="24dp"
+    tools:context=".GenreActivity">
 
     <View
         android:id="@+id/progress_bar_background"
         android:layout_width="0dp"
         android:layout_height="8dp"
-        android:background="#E0E0E0"
+        android:background="@color/colorGrayLight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +57,7 @@
         android:layout_marginTop="24dp"
         android:fontFamily="sans-serif-medium"
         android:text="Choose your favourite reading genre"
-        android:textColor="#000000"
+        android:textColor="@color/colorBlack"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +87,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:textCursorDrawable= "@color/dark_green"
-            android:popupBackground="#FFFFFF"
+            android:popupBackground="@color/colorWhite"
             android:textColorHint="@color/dark_green"
             android:dropDownHeight="200dp"
             android:dropDownVerticalOffset="8dp"
@@ -119,14 +120,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
-        android:backgroundTint="#000000"
+        android:backgroundTint="@color/colorBlack"
         android:text="Next"
         android:textAllCaps="false"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toTopOf="@+id/progress_bar_background"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chip_scroll_view" />
+        app:layout_constraintTop_toBottomOf="@id/chip_scroll_view"
+        app:layout_constraintVertical_bias="0.439" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

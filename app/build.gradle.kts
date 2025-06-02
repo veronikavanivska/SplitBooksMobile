@@ -38,6 +38,10 @@ android {
 }
 
 dependencies {
+    compileOnly ("org.projectlombok:lombok:1.18.32")
+    annotationProcessor ("org.projectlombok:lombok:1.18.32")
+    implementation (libs.glide)
+    implementation(libs.gridlayout)
     implementation(libs.converter.gson)
     implementation(libs.okhttp)
     implementation(libs.appcompat)
@@ -61,4 +65,8 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
+}
+java{
+    sourceCompatibility = JavaVersion.VERSION_18
+    targetCompatibility = JavaVersion.VERSION_18
 }

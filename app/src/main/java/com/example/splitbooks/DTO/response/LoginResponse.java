@@ -1,4 +1,4 @@
-package com.example.splitbooks.DTO;
+package com.example.splitbooks.DTO.response;
 
 public class LoginResponse {
     private Long userId;

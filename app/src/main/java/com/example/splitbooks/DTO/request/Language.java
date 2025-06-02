@@ -1,7 +1,14 @@
-package com.example.splitbooks.DTO;
+package com.example.splitbooks.DTO.request;
 
 import com.google.gson.annotations.SerializedName;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Language {
     @SerializedName("languageId")
     private int languageId;
@@ -9,11 +16,5 @@ public class Language {
     @SerializedName("languageName")
     private String languageName;
 
-    public int getLanguageId() {
-        return languageId;
-    }
 
-    public String getLanguageName() {
-        return languageName;
-    }
 }

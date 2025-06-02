@@ -17,8 +17,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.splitbooks.DTO.request.ProfileSetupRequest;
-import com.example.splitbooks.DTO.response.ProfileSetupResponse;
+import com.bumptech.glide.Glide;
+import com.example.splitbooks.DTO.request.EditProfileRequest;
+import com.example.splitbooks.DTO.response.ProfileResponse;
 import com.example.splitbooks.helper.CameraHelper;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
@@ -31,21 +32,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProfileSetupActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity {
     private ImageView avatarPreview;
     private Button uploadAvatarButton;
-    private Button submitButton;
-    private EditText phoneField, nameField, lastField, usernameField ;
+    private Button submitButton,backButton;
+    private EditText phoneField, nameField, lastField, usernameField, usernamePublicField;
     private ArrayList<Integer> selectedGenres, selectedLanguages, selectedFormats;
     private Uri selectedAvatarUri;
     private CameraHelper cameraHelper;
@@ -56,15 +56,20 @@ public class ProfileSetupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_public_setup);
+        setContentView(R.layout.activity_edit_profile);
+
 
         usernameField = findViewById(R.id.anon_username_field);
-        avatarPreview = findViewById(R.id.avatar_preview);
-        uploadAvatarButton = findViewById(R.id.upload_avatar_button);
-        submitButton = findViewById(R.id.submit_button);
-        phoneField = findViewById(R.id.phone_field);
-        nameField = findViewById(R.id.first_name_field);
-        lastField = findViewById(R.id.last_name_field);
+        usernamePublicField = findViewById(R.id.edit_username_field);
+        usernamePublicField = findViewById(R.id.edit_username_field);
+        avatarPreview = findViewById(R.id.edit_avatar_preview);
+        uploadAvatarButton = findViewById(R.id.edit_upload_avatar_button);
+        submitButton = findViewById(R.id.save_edit_button);
+        phoneField = findViewById(R.id.edit_phone_field);
+        nameField = findViewById(R.id.edit_first_name_field);
+        lastField = findViewById(R.id.edit_last_name_field);
+        backButton = findViewById(R.id.back_button_edit_profile);
+
         String profileType = getIntent().getStringExtra("profileType");
         isAnonymous = "ANONYMOUS".equals(profileType);
 
@@ -73,17 +78,16 @@ public class ProfileSetupActivity extends AppCompatActivity {
             phoneField.setVisibility(View.GONE);
             nameField.setVisibility(View.GONE);
             lastField.setVisibility(View.GONE);
+            usernamePublicField.setVisibility(View.GONE);
         } else {
             usernameField.setVisibility(View.GONE);
+            usernamePublicField.setVisibility(View.VISIBLE);
             phoneField.setVisibility(View.VISIBLE);
             nameField.setVisibility(View.VISIBLE);
             lastField.setVisibility(View.VISIBLE);
         }
 
 
-        selectedGenres = getIntent().getIntegerArrayListExtra("selectedGenreIds");
-        selectedLanguages = getIntent().getIntegerArrayListExtra("selectedLanguageIds");
-        selectedFormats = getIntent().getIntegerArrayListExtra("selectedFormatIds");
 
         cameraHelper = new CameraHelper(this);
 
@@ -121,34 +125,33 @@ public class ProfileSetupActivity extends AppCompatActivity {
             String name = nameField.getText().toString().trim();
             String lastName = lastField.getText().toString().trim();
             String phone = phoneField.getText().toString().trim();
+            String pubUsername = usernamePublicField.getText().toString().trim();
             if (isAnonymous && username.isEmpty()) {
                 Toast.makeText(this, "Username is required for anonymous profiles", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            if (!isAnonymous && (name.isEmpty() || lastName.isEmpty() || phone.isEmpty())) {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            if (!isAnonymous && (pubUsername.isEmpty())) {
+                Toast.makeText(this, "Please fill username", Toast.LENGTH_SHORT).show();
             } else {
-                List<Long> genresLong = selectedGenres.stream()
-                        .map(Integer::longValue)
-                        .collect(Collectors.toList());
-                List<Long> languagesLong = selectedLanguages.stream()
-                        .map(Integer::longValue)
-                        .collect(Collectors.toList());
-                List<Long> formatsLong = selectedFormats.stream()
-                        .map(Integer::longValue)
-                        .collect(Collectors.toList());
 
-                ProfileSetupRequest request;
+                EditProfileRequest request;
                 if (isAnonymous) {
-                    request = new ProfileSetupRequest(username, genresLong, languagesLong, formatsLong);
+                    request = new EditProfileRequest( username);
+                    System.out.println("Received request: " + request);
                 } else {
-                    request = new ProfileSetupRequest(name, lastName, phone, genresLong, languagesLong, formatsLong);
+                    String nameValue = name.isEmpty() ? " " : name;
+                    String lastNameValue = lastName.isEmpty() ? " " : lastName;
+                    String phoneValue = phone.isEmpty() ? " " : phone;
+                    request = new EditProfileRequest(nameValue, lastNameValue, phoneValue,pubUsername);
+                    System.out.println("Received request: " + request);
                 }
 
-                setupUser(request);
+                editUser(request);
             }
         });
+
+        loadProfileData();
     }
 
     private void showImagePickerDialog() {
@@ -211,9 +214,37 @@ public class ProfileSetupActivity extends AppCompatActivity {
             return null;
         }
     }
+    private void loadProfileData() {
+        ApiService apiService = ApiClient.getApiService(getApplicationContext());
+        apiService.getProfile().enqueue(new Callback<ProfileResponse>() {
+            @Override
+            public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ProfileResponse profile = response.body();
+                    if (!isAnonymous) {
+                        nameField.setText(profile.getFirstName());
+                        lastField.setText(profile.getLastName());
+                        phoneField.setText(profile.getPhone());
+                        usernamePublicField.setText(profile.getUsername());
+                    } else {
+                        usernameField.setText(profile.getUsername());
+                    }
 
-    private void setupUser(ProfileSetupRequest request) {
-        try {
+                    Glide.with(EditProfileActivity.this)
+                            .load(profile.getAvatarUrl())
+                            .placeholder(R.drawable.default_avatar)
+                            .into(avatarPreview);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProfileResponse> call, Throwable t) {
+                Toast.makeText(EditProfileActivity.this, "Failed to load profile", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void editUser(EditProfileRequest request) {
+        try{
             ApiService apiService = ApiClient.getApiService(getApplicationContext());
             MultipartBody.Part avatarPart = selectedAvatarUri != null ? createMultipartFromUri("avatar", selectedAvatarUri) : null;
 
@@ -221,26 +252,27 @@ public class ProfileSetupActivity extends AppCompatActivity {
             String json = gson.toJson(request);
             RequestBody jsonBody = RequestBody.create(json, MediaType.parse("application/json"));
 
-            Call<ProfileSetupResponse> call = apiService.setupProfile(jsonBody, avatarPart);
-            call.enqueue(new Callback<ProfileSetupResponse>() {
+            Call<ResponseBody> call = apiService.editProfile(jsonBody, avatarPart);
+            call.enqueue(new Callback<ResponseBody>() {
+
                 @Override
-                public void onResponse(Call<ProfileSetupResponse> call, Response<ProfileSetupResponse> response) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(ProfileSetupActivity.this, "Profile setup successful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(ProfileSetupActivity.this, HomePageActivity.class));
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if(response.isSuccessful()){
+
+                        Toast.makeText(EditProfileActivity.this, "Profile edited succesfully", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(EditProfileActivity.this, HomePageActivity.class));
                         finish();
-                    } else {
-                        Toast.makeText(ProfileSetupActivity.this, "Failed: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(EditProfileActivity.this, "Failed: " + response.code(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
-                public void onFailure(Call<ProfileSetupResponse> call, Throwable t) {
-                    Toast.makeText(ProfileSetupActivity.this, "Network error. Please try again.", Toast.LENGTH_SHORT).show();
-                    t.printStackTrace();
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
                 }
             });
-        } catch (Exception e) {
+        }catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "An unexpected error occurred.", Toast.LENGTH_SHORT).show();
         }

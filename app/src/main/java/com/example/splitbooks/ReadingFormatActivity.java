@@ -8,9 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.splitbooks.DTO.Genre;
-import com.example.splitbooks.DTO.Language;
-import com.example.splitbooks.DTO.ReadingFormat;
+import com.example.splitbooks.DTO.request.ReadingFormat;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
 import com.google.android.material.chip.Chip;
@@ -46,7 +44,10 @@ public class ReadingFormatActivity extends AppCompatActivity {
         chipAudiobook = findViewById(R.id.chip_aubook);
         next = findViewById(R.id.next_button);
 
+
         loadReadingFormatsApi();
+
+
 
         next.setOnClickListener(v -> {
             ArrayList<Integer> selectedFormatIds = new ArrayList<>();

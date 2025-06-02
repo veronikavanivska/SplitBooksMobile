@@ -7,28 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:padding="24dp"
-    tools:context=".ReadingFormatActivity">
-
-    <View
-        android:id="@+id/progress_bar_background"
-        android:layout_width="0dp"
-        android:layout_height="8dp"
-        android:background="@color/colorGrayLight"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.921" />
-
-    <View
-        android:id="@+id/progress_bar_fill"
-        android:layout_width="0dp"
-        android:layout_height="8dp"
-        android:background="@color/dark_green"
-        app:layout_constraintBottom_toBottomOf="@id/progress_bar_background"
-        app:layout_constraintEnd_toStartOf="@+id/progress_bar_background_end_guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/progress_bar_background" />
+    tools:context=".EditReadingFormatActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/progress_bar_background_end_guideline"
@@ -49,9 +28,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/back_button_edit_formats"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorGrayDark"
+        android:text="Back"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/next_button"
+        app:layout_constraintVertical_bias="0.217" />
 
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="241dp"
         android:layout_height="189dp"
         android:layout_marginTop="64dp"
@@ -59,11 +54,9 @@
         android:orientation="vertical"
         android:paddingTop="24dp"
         android:paddingBottom="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/next_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/title">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_ebook"
@@ -125,7 +118,7 @@
         android:layout_height="58dp"
         android:layout_marginTop="24dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Choose your favourite reading format"
+        android:text="Edit your reading format"
         android:textColor="@color/colorBlack"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -141,12 +134,11 @@
         android:text="Next"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toTopOf="@+id/progress_bar_background"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        app:layout_constraintVertical_bias="0.755" />
-
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.432" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

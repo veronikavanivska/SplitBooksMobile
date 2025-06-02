@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.splitbooks.DTO.LoginRequest;
-import com.example.splitbooks.DTO.LoginResponse;
+import com.example.splitbooks.DTO.request.LoginRequest;
+import com.example.splitbooks.DTO.response.LoginResponse;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
 import com.example.splitbooks.network.JwtManager;
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
-                            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
                             startActivity(intent);
                             finish();
                         }

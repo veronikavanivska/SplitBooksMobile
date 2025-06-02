@@ -7,41 +7,13 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:padding="24dp"
-    tools:context=".LanguageActivity">
+    tools:context=".EditGenresActivity">
 
-    <View
-        android:id="@+id/progress_bar_background"
-        android:layout_width="0dp"
-        android:layout_height="8dp"
-        android:background="@color/colorGrayLight"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.921" />
-
-    <View
-        android:id="@+id/progress_bar_fill"
-        android:layout_width="0dp"
-        android:layout_height="8dp"
-        android:background="@color/dark_green"
-        app:layout_constraintBottom_toBottomOf="@id/progress_bar_background"
-        app:layout_constraintEnd_toStartOf="@+id/progress_bar_background_end_guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/progress_bar_background" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/progress_bar_background_end_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.50" />
 
     <ImageView
         android:id="@+id/app_logo"
         android:layout_width="321dp"
         android:layout_height="191dp"
-        android:layout_marginTop="40dp"
         android:contentDescription="@string/logo"
         android:scaleType="centerInside"
         android:src="@drawable/logo"
@@ -56,21 +28,21 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Choose your favourite reading language"
-        android:textColor="#000000"
+        android:text="Edit your genres"
+        android:textColor="@color/colorBlack"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_logo" />
 
-    <!-- Replace Spinner with Material AutoCompleteTextView inside TextInputLayout -->
+
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/language_dropdown_layout"
+        android:id="@+id/edit_genre_dropdown_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:hint="Select languages"
+        android:hint="Select genres"
 
         app:layout_constraintTop_toBottomOf="@id/title"
         app:layout_constraintStart_toStartOf="parent"
@@ -82,15 +54,16 @@
 
 
         <AutoCompleteTextView
-            android:id="@+id/auto_complete_language"
+            android:id="@+id/edit_auto_complete_genre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:dropDownHeight="200dp"
-            android:dropDownVerticalOffset="8dp"
             android:inputType="text"
+            android:textCursorDrawable= "@color/dark_green"
             android:popupBackground="@color/colorWhite"
             android:textColorHint="@color/dark_green"
-            android:textCursorDrawable="@color/dark_green" />
+            android:dropDownHeight="200dp"
+            android:dropDownVerticalOffset="8dp"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,14 +72,15 @@
         android:id="@+id/chip_scroll_view"
         android:layout_width="0dp"
         android:layout_height="120dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:scrollbars="vertical"
-        app:layout_constraintTop_toBottomOf="@id/language_dropdown_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/edit_genre_dropdown_layout">
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_group_selected_language"
+            android:id="@+id/chip_group_selected_genre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:chipSpacing="8dp"
@@ -114,22 +88,36 @@
             app:singleSelection="false" />
     </ScrollView>
 
-
     <Button
         android:id="@+id/next_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
-        android:backgroundTint="#000000"
-        android:text="Next"
+        android:backgroundTint="@color/colorBlack"
+        android:text="Save"
         android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/progress_bar_background"
+        android:textColor="@color/colorWhite"
+
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chip_scroll_view"
-        app:layout_constraintVertical_bias="0.188" />
+        app:layout_constraintTop_toBottomOf="@id/chip_scroll_view" />
 
+    <Button
+        android:id="@+id/back_button_edit_genres"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorGrayDark"
+        android:text="Back"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/next_button"
+        app:layout_constraintVertical_bias="0.217" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,8 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.splitbooks.DTO.Genre;
-import com.example.splitbooks.DTO.Language;
+import com.example.splitbooks.DTO.request.Language;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
 import com.google.android.material.chip.Chip;
@@ -49,6 +48,7 @@ public class LanguageActivity extends AppCompatActivity {
         chipGroupLanguage = findViewById(R.id.chip_group_selected_language);
         next = findViewById(R.id.next_button);
 
+
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, languageNames);
         autoCompleteLanguage.setAdapter(adapter);
 
@@ -60,6 +60,7 @@ public class LanguageActivity extends AppCompatActivity {
             }
             autoCompleteLanguage.setText("");
         });
+
 
         next.setOnClickListener(v -> {
             List<Integer> selectedLanguageIds = getSelectedLanguageIds();
