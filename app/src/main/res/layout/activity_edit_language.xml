@@ -9,12 +9,20 @@
     android:padding="24dp"
     tools:context=".EditLanguageActivity">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/progress_bar_background_end_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.50" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/back_arrow_edit_language"
+        android:layout_width="63dp"
+        android:layout_height="47dp"
+        android:backgroundTint="@color/dark_green"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ios_arrow_left"
+        app:title="Edit Profile"
+        app:titleTextColor="@android:color/white" />
 
     <ImageView
         android:id="@+id/app_logo"
@@ -42,7 +50,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_logo" />
 
-    <!-- Replace Spinner with Material AutoCompleteTextView inside TextInputLayout -->
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/language_dropdown_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -107,22 +115,6 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chip_scroll_view" />
-
-    <Button
-        android:id="@+id/back_button_edit_languages"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorGrayDark"
-        android:text="Back"
-        android:textAllCaps="false"
-        android:textColor="@color/colorWhite"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/next_button"
-        app:layout_constraintVertical_bias="0.217" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

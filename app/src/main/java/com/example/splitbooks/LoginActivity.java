@@ -1,5 +1,6 @@
 package com.example.splitbooks;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.splitbooks.DTO.request.LoginRequest;
 import com.example.splitbooks.DTO.response.LoginResponse;
+import com.example.splitbooks.DTO.response.ProfileResponse;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
 import com.example.splitbooks.network.JwtManager;
@@ -93,13 +95,10 @@ public class LoginActivity extends AppCompatActivity {
                         if (loginResponse != null) {
 
                             JwtManager.saveToken(getApplicationContext(), loginResponse.getToken());
+
                             Log.d("LoginActivity", "Saved Token: " + loginResponse.getToken());
+                            fetchProfileAndNavigate();
 
-                            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-
-                            Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
-                            startActivity(intent);
-                            finish();
                         }
                     } else {
                         Toast.makeText(LoginActivity.this, "Login failed. Please check your credentials.", Toast.LENGTH_SHORT).show();
@@ -117,5 +116,38 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(LoginActivity.this, "An unexpected error occurred.", Toast.LENGTH_SHORT).show();
         }
     }
+    private void fetchProfileAndNavigate() {
+        ApiService apiService = ApiClient.getApiService(getApplicationContext());
+        Call<ProfileResponse> call = apiService.getProfile();
+
+        call.enqueue(new Callback<ProfileResponse>() {
+            @Override
+            public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                if (response.isSuccessful()) {
+                    ProfileResponse profile = response.body();
+                    if (profile != null) {
+                        long profileId = profile.getId();
+
+                        JwtManager.saveProfileId(getApplicationContext(),profileId);
+
+                        Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Profile is empty", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(LoginActivity.this, "Failed to load profile", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProfileResponse> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Network error while loading profile", Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+            }
+        });
+    }
+
 
 }

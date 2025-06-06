@@ -3,6 +3,10 @@ package com.example.splitbooks.network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
+import android.util.Log;
+
+import org.json.JSONObject;
 
 public class JwtManager {
     private static final String PREF_NAME = "splitbooks_prefs";
@@ -20,5 +24,16 @@ public class JwtManager {
     public static void clearToken(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         prefs.edit().remove(TOKEN_KEY).apply();
+    }
+    public static long getMyProfileId(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        return prefs.getLong("myProfileId", -1L);
+    }
+
+    public static void saveProfileId(Context context, long profileId) {
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .edit()
+                .putLong("myProfileId", profileId)
+                .apply();
     }
 }

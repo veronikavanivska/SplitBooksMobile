@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import com.example.splitbooks.DTO.request.Language;
 import com.example.splitbooks.DTO.response.ProfileResponse;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -31,7 +33,9 @@ public class EditLanguageActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private List<Language> allLanguages = new ArrayList<>();
     private ChipGroup chipGroupLanguage;
-    private Button nextButton,  backButton ;
+    private Button nextButton;
+
+    private MaterialToolbar backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,7 @@ public class EditLanguageActivity extends AppCompatActivity {
 
         autoCompleteLanguage = findViewById(R.id.auto_complete_language);
         chipGroupLanguage = findViewById(R.id.chip_group_selected_language);
-        backButton = findViewById(R.id.back_button_edit_languages);
+        backButton = findViewById(R.id.back_arrow_edit_language);
         nextButton = findViewById(R.id.next_button);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
         autoCompleteLanguage.setAdapter(adapter);
@@ -60,6 +64,7 @@ public class EditLanguageActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
 
         nextButton.setOnClickListener(v -> {
             List<Integer> selectedIds = getSelectedLanguageIds();

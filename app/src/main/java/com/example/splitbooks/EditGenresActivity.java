@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import com.example.splitbooks.DTO.request.Genre;
 import com.example.splitbooks.DTO.response.ProfileResponse;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -32,7 +34,8 @@ public class EditGenresActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private List<Genre> allGenres = new ArrayList<>();
     private ChipGroup chipGroupGenres;
-    private Button saveButton,back;
+    private Button saveButton;
+    private MaterialToolbar back;
     private List<Long> currentUserGenreIds = new ArrayList<>();
 
     @Override
@@ -43,7 +46,7 @@ public class EditGenresActivity extends AppCompatActivity {
         autoCompleteGenre = findViewById(R.id.edit_auto_complete_genre);
         chipGroupGenres = findViewById(R.id.chip_group_selected_genre);
         saveButton = findViewById(R.id.next_button);
-        back = findViewById(R.id.back_button_edit_genres);
+        back = findViewById(R.id.back_arrow_edit_genre);
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
         autoCompleteGenre.setAdapter(adapter);
@@ -61,6 +64,7 @@ public class EditGenresActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
         saveButton.setOnClickListener(v -> {
             List<Long> selectedGenreIds = getSelectedGenreIds();
             if (selectedGenreIds.isEmpty()) {
@@ -135,7 +139,7 @@ public class EditGenresActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(EditGenresActivity.this, "Genres updated successfully", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(EditGenresActivity.this, PublicProfileActivity.class);
+                    Intent intent = new Intent(EditGenresActivity.this, HomePageActivity.class);
                     startActivity(intent);
                     finish();
                 } else {

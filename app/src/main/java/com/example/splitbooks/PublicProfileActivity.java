@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import com.example.splitbooks.DTO.response.ProfileResponse;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
 import com.example.splitbooks.network.JwtManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -34,15 +36,15 @@ public class PublicProfileActivity extends AppCompatActivity {
     private ImageView avatarImage;
     private boolean hasAnonymousProfile;
     private boolean isAnonymousProfile;
-
+    private Long currentProfileId;
     private TextView editGenres, editLanguages;
-    private Button btnEditProfile, btnBack, switchToAnonymous,logOut;
+    private Button logOut;
+    private BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_public_profile);
-
         usernameText = findViewById(R.id.username_text);
         followersText = findViewById(R.id.followers_text);
         followingText = findViewById(R.id.following_text);
@@ -57,11 +59,14 @@ public class PublicProfileActivity extends AppCompatActivity {
         editGenres = findViewById(R.id.edit_genres);
         editLanguages = findViewById(R.id.edit_languages);
 
-        switchToAnonymous = findViewById(R.id.btn_switch_to_anonymous);
-        btnEditProfile = findViewById(R.id.btn_edit_profile);
-        btnBack = findViewById(R.id.btn_back);
+        bottomNavigation = findViewById(R.id.bottom_navigation);
 
         setClickListeners();
+        fetchProfile();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
         fetchProfile();
     }
 
@@ -76,33 +81,41 @@ public class PublicProfileActivity extends AppCompatActivity {
             finish();
         });
 
-        btnEditProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(this, EditProfileActivity.class);
-            intent.putExtra("profileType", isAnonymousProfile ? "ANONYMOUS" : "PUBLIC");
-            startActivity(intent);
-            finish();
-        });
-
-        switchToAnonymous.setOnClickListener(v -> {
-            if (!hasAnonymousProfile) {
-                toggleToAnonymousThenSetup();
-            } else {
-                toggleProfile();
+        bottomNavigation.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.action_edit_profile) {
+                Intent intent = new Intent(this, EditProfileActivity.class);
+                intent.putExtra("profileType", isAnonymousProfile ? "ANONYMOUS" : "PUBLIC");
+                startActivity(intent);
+                finish();
+                return true;
+            } else if (id == R.id.action_switch_to_anonymous) {
+                if (!hasAnonymousProfile) {
+                    toggleToAnonymousThenSetup();
+                } else {
+                    toggleProfile();
+                }
+                return true;
+            } else if (id == R.id.action_back) {
+                startActivity(new Intent(this, HomePageActivity.class));
+                finish();
+                return true;
             }
+            return false;
+        });
+        followersText.setOnClickListener(v -> {
+            Intent intent = new Intent(this, FollowListActivity.class);
+            intent.putExtra("profileId", currentProfileId);
+            intent.putExtra("isFollowers", true);
+            startActivity(intent);
         });
 
-        btnBack.setOnClickListener(v -> {
-            startActivity(new Intent(this, HomePageActivity.class));
-            finish();
+        followingText.setOnClickListener(v -> {
+            Intent intent = new Intent(this, FollowListActivity.class);
+            intent.putExtra("profileId", currentProfileId);
+            intent.putExtra("isFollowers", false);
+            startActivity(intent);
         });
-
-        followersText.setOnClickListener(v ->
-                Toast.makeText(this, "View all followers", Toast.LENGTH_SHORT).show()
-        );
-
-        followingText.setOnClickListener(v ->
-                Toast.makeText(this, "View all followings", Toast.LENGTH_SHORT).show()
-        );
 
         logOut.setOnClickListener(v->{
             JwtManager.clearToken(this);
@@ -140,15 +153,23 @@ public class PublicProfileActivity extends AppCompatActivity {
                     } else {
                         fullNameText.setVisibility(View.VISIBLE);
                         phoneNumberText.setVisibility(View.VISIBLE);
-
-
                         fullNameText.setText(profile.getFirstName() + " " + profile.getLastName());
                         phoneNumberText.setText(profile.getPhone());
                     }
+                    currentProfileId = profile.getId();
 
                     hasAnonymousProfile = profile.isHasAnonymous();
                     isAnonymousProfile = profile.isAnonymous();
-                    switchToAnonymous.setText(profile.isAnonymous() ? "Switch to Public" : "Switch to Anonymous");
+
+                    MenuItem switchItem = bottomNavigation.getMenu().findItem(R.id.action_switch_to_anonymous);
+
+                    if (profile.isAnonymous()) {
+                        switchItem.setTitle("Switch to Public");
+                        switchItem.setIcon(R.drawable.user_icon_svgrepo_com);
+                    } else {
+                        switchItem.setTitle("Switch to Anonymous");
+                        switchItem.setIcon(R.drawable.anonymous_user_icon);
+                    }
 
                     populateChips(genresContainer, profile.getGenreNames());
                     populateChips(languagesContainer, profile.getLanguageNames());
@@ -161,6 +182,8 @@ public class PublicProfileActivity extends AppCompatActivity {
                                 .circleCrop()
                                 .into(avatarImage);
                     }
+
+                    JwtManager.saveProfileId(getApplicationContext(),profile.getId());
                 }
             }
 
@@ -218,7 +241,7 @@ public class PublicProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    recreate();
+                    fetchProfile();
                 } else {
                     Toast.makeText(PublicProfileActivity.this, "Failed to toggle profile", Toast.LENGTH_SHORT).show();
                 }

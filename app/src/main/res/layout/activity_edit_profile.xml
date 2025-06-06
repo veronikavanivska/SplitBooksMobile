@@ -14,19 +14,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="1.0" />
+        app:layout_constraintGuide_begin="387dp" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/back_arrow_edit_profile"
+        android:layout_width="63dp"
+        android:layout_height="47dp"
+        android:backgroundTint="@color/dark_green"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ios_arrow_left"
+        app:title="Edit Profile"
+        app:titleTextColor="@android:color/white" />
 
     <ImageView
         android:id="@+id/app_logo"
-        android:layout_width="321dp"
-        android:layout_height="191dp"
+        android:layout_width="303dp"
+        android:layout_height="148dp"
         android:contentDescription="@string/logo"
         android:scaleType="centerInside"
         android:src="@drawable/logo"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/edit_personal_data_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.1" />
 
     <EditText
@@ -201,20 +215,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/anon_username_field" />
 
-    <Button
-        android:id="@+id/back_button_edit_profile"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="@color/colorGrayDark"
-        android:text="Back"
-        android:textAllCaps="false"
-
-        android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/save_edit_button"
-        app:layout_constraintVertical_bias="0.121" />
 </androidx.constraintlayout.widget.ConstraintLayout>

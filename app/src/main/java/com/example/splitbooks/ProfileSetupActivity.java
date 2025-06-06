@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,10 +55,13 @@ public class ProfileSetupActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> galleryLauncher;
     private boolean isAnonymous;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_public_setup);
+
+
 
         usernameField = findViewById(R.id.anon_username_field);
         avatarPreview = findViewById(R.id.avatar_preview);
@@ -126,8 +131,8 @@ public class ProfileSetupActivity extends AppCompatActivity {
                 return;
             }
 
-            if (!isAnonymous && (name.isEmpty() || lastName.isEmpty() || phone.isEmpty())) {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            if (!isAnonymous && (name.isEmpty() || lastName.isEmpty())) {
+                Toast.makeText(this, "Please fill name and lastname fields", Toast.LENGTH_SHORT).show();
             } else {
                 List<Long> genresLong = selectedGenres.stream()
                         .map(Integer::longValue)
@@ -245,4 +250,10 @@ public class ProfileSetupActivity extends AppCompatActivity {
             Toast.makeText(this, "An unexpected error occurred.", Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed(); // Goes back to the previous activity
+    }
+
 }

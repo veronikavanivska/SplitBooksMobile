@@ -25,6 +25,11 @@ public class HomePageActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+        search.setOnClickListener(v->{
+            Intent intent = new Intent(HomePageActivity.this, SearchProfilesActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
 }

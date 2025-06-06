@@ -41,15 +41,15 @@
 
     <ImageView
         android:id="@+id/app_logo"
-        android:layout_width="321dp"
-        android:layout_height="191dp"
+        android:layout_width="304dp"
+        android:layout_height="172dp"
         android:contentDescription="@string/logo"
         android:scaleType="centerInside"
         android:src="@drawable/logo"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/personal_data_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.1" />
 
     <EditText

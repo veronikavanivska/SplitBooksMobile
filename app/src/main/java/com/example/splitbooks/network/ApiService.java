@@ -12,6 +12,7 @@ import com.example.splitbooks.DTO.response.ProfileSetupResponse;
 import com.example.splitbooks.DTO.request.ReadingFormat;
 import com.example.splitbooks.DTO.request.RegistrationRequest;
 import com.example.splitbooks.DTO.response.RegistrationResponse;
+import com.example.splitbooks.DTO.response.ShortProfileResponse;
 
 import java.util.List;
 
@@ -20,11 +21,14 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
     @POST("api/auth/login")  // Assuming the endpoint is "/login"
@@ -68,5 +72,28 @@ public interface ApiService {
     @PATCH("/api/profile/toggle")
     Call<ResponseBody> toggleProfile();
 
+    @GET("/api/follow/followers/{profileId}")
+    Call<List<ShortProfileResponse>> getFollowers(@Path("profileId") Long profileId);
+
+    @GET("/api/follow/following/{profileId}")
+    Call<List<ShortProfileResponse>> getFollowing(@Path("profileId") Long profileId);
+
+    @GET("/api/profile/{profileId}")
+    Call<ProfileResponse> getProfileById(@Path("profileId") Long profileId);
+
+    @GET("/api/follow/is-following/{targetProfileId}")
+    Call<Boolean> isFollowing(@Path("targetProfileId") Long targetProfileId);
+
+    @POST("/api/follow/{targetProfileId}")
+    Call<ResponseBody> follow(@Path("targetProfileId") Long targetProfileId);
+
+    @DELETE("/api/follow/unfollow/{targetProfileId}")
+    Call<ResponseBody> unfollow(@Path("targetProfileId") Long targetProfileId);
+
+    @GET("/api/follow/search")
+    Call<List<ShortProfileResponse>> searchProfiles(@Query("username") String username);
+
+    @GET("/api/suggestions/best")
+    Call<List<ShortProfileResponse>> getBestFriendSuggestions();
 
 }

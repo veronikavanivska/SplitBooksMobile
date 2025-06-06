@@ -30,6 +30,10 @@
         <activity android:name=".EditLanguageActivity" />
         <activity android:name=".EditReadingFormatActivity" />
         <activity android:name=".EditProfileActivity" />
+        <activity android:name=".FollowListActivity" />
+        <activity android:name=".OtherProfileActivity" />
+        <activity android:name=".SearchProfilesActivity"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

@@ -23,6 +23,7 @@ import com.example.splitbooks.DTO.response.ProfileResponse;
 import com.example.splitbooks.helper.CameraHelper;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
@@ -47,6 +48,8 @@ public class EditProfileActivity extends AppCompatActivity {
     private Button submitButton,backButton;
     private EditText phoneField, nameField, lastField, usernameField, usernamePublicField;
     private ArrayList<Integer> selectedGenres, selectedLanguages, selectedFormats;
+
+    private MaterialToolbar back;
     private Uri selectedAvatarUri;
     private CameraHelper cameraHelper;
     private ActivityResultLauncher<Intent> cameraLauncher;
@@ -68,7 +71,7 @@ public class EditProfileActivity extends AppCompatActivity {
         phoneField = findViewById(R.id.edit_phone_field);
         nameField = findViewById(R.id.edit_first_name_field);
         lastField = findViewById(R.id.edit_last_name_field);
-        backButton = findViewById(R.id.back_button_edit_profile);
+        back = findViewById(R.id.back_arrow_edit_profile);
 
         String profileType = getIntent().getStringExtra("profileType");
         isAnonymous = "ANONYMOUS".equals(profileType);
@@ -131,8 +134,8 @@ public class EditProfileActivity extends AppCompatActivity {
                 return;
             }
 
-            if (!isAnonymous && (pubUsername.isEmpty())) {
-                Toast.makeText(this, "Please fill username", Toast.LENGTH_SHORT).show();
+            if (!isAnonymous && (pubUsername.isEmpty() || name.isEmpty() || lastName.isEmpty())) {
+                Toast.makeText(this, "Please fill username, name and lastname fields", Toast.LENGTH_SHORT).show();
             } else {
 
                 EditProfileRequest request;
@@ -140,15 +143,18 @@ public class EditProfileActivity extends AppCompatActivity {
                     request = new EditProfileRequest( username);
                     System.out.println("Received request: " + request);
                 } else {
-                    String nameValue = name.isEmpty() ? " " : name;
-                    String lastNameValue = lastName.isEmpty() ? " " : lastName;
                     String phoneValue = phone.isEmpty() ? " " : phone;
-                    request = new EditProfileRequest(nameValue, lastNameValue, phoneValue,pubUsername);
+                    request = new EditProfileRequest(name, lastName, phoneValue,pubUsername);
                     System.out.println("Received request: " + request);
                 }
 
                 editUser(request);
             }
+        });
+        back.setNavigationOnClickListener(v -> {
+            Intent intent = new Intent(this, PublicProfileActivity.class);
+            startActivity(intent);
+            finish();
         });
 
         loadProfileData();
@@ -260,7 +266,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     if(response.isSuccessful()){
 
                         Toast.makeText(EditProfileActivity.this, "Profile edited succesfully", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(EditProfileActivity.this, HomePageActivity.class));
+                        startActivity(new Intent(EditProfileActivity.this, PublicProfileActivity.class));
                         finish();
                     }else{
                         Toast.makeText(EditProfileActivity.this, "Failed: " + response.code(), Toast.LENGTH_SHORT).show();
