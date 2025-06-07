@@ -1,4 +1,4 @@
-package com.example.splitbooks;
+package com.example.splitbooks.activity.setup;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +19,8 @@ import androidx.core.content.ContextCompat;
 
 import com.example.splitbooks.DTO.request.ProfileSetupRequest;
 import com.example.splitbooks.DTO.response.ProfileSetupResponse;
+import com.example.splitbooks.R;
+import com.example.splitbooks.activity.home.HomePageActivity;
 import com.example.splitbooks.helper.CameraHelper;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;

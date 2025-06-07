@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:padding="24dp"
-    tools:context=".EditLanguageActivity">
+    tools:context=".activity.edit.EditLanguageActivity">
 
 
     <com.google.android.material.appbar.MaterialToolbar

@@ -1,14 +1,11 @@
-package com.example.splitbooks;
+package com.example.splitbooks.activity.profile;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,10 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.splitbooks.DTO.response.ProfileResponse;
+import com.example.splitbooks.R;
+import com.example.splitbooks.activity.search.SearchBookActivity;
+import com.example.splitbooks.activity.search.SearchProfilesActivity;
+import com.example.splitbooks.activity.home.HomePageActivity;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
 import com.example.splitbooks.network.JwtManager;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
@@ -67,12 +67,22 @@ public class OtherProfileActivity extends AppCompatActivity {
         bottomNavigation.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             if(id == R.id.action_profile){
-                Intent intent = new Intent(this,PublicProfileActivity.class);
+                Intent intent = new Intent(this, PublicProfileActivity.class);
                 startActivity(intent);
                 finish();
                 return true;
             }else if(id == R.id.action_home){
-                Intent intent = new Intent(this,HomePageActivity.class);
+                Intent intent = new Intent(this, HomePageActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            }else if(id == R.id.action_search){
+                Intent intent = new Intent(this, SearchProfilesActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            }else if(id == R.id.action_library){
+                Intent intent = new Intent(this, SearchBookActivity.class);
                 startActivity(intent);
                 finish();
                 return true;
@@ -125,8 +135,12 @@ public class OtherProfileActivity extends AppCompatActivity {
                     usernameText.setText(profile.getUsername());
                     followersText.setText("Followers: " + profile.getFollowers());
                     followingText.setText("Following: " + profile.getFollowing());
-                    fullNameText.setText(profile.getFirstName() + " " + profile.getLastName());
-                    phoneNumberText.setText(profile.getPhone());
+                    String firstName = profile.getFirstName() != null ? profile.getFirstName() : " ";
+                    String lastName = profile.getLastName() != null ? profile.getLastName() : " ";
+                    String phone = profile.getPhone() != null ? profile.getPhone() : " ";
+
+                    fullNameText.setText(firstName + " " + lastName);
+                    phoneNumberText.setText(phone);
 
                     populateChips(genresContainer, profile.getGenreNames());
                     populateChips(languagesContainer, profile.getLanguageNames());

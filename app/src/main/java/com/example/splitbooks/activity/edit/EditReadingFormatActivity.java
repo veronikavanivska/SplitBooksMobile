@@ -1,9 +1,8 @@
-package com.example.splitbooks;
+package com.example.splitbooks.activity.edit;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -12,7 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.splitbooks.DTO.request.EditReadingPreferences;
 import com.example.splitbooks.DTO.request.ReadingFormat;
 import com.example.splitbooks.DTO.response.ProfileResponse;
-import com.example.splitbooks.PublicProfileActivity;
+import com.example.splitbooks.activity.profile.PublicProfileActivity;
+import com.example.splitbooks.R;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
 import com.google.android.material.appbar.MaterialToolbar;

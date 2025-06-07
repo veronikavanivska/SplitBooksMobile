@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:padding="24dp"
-    tools:context=".ProfileSetupActivity">
+    tools:context=".activity.setup.ProfileSetupActivity">
 
     <View
         android:id="@+id/progress_bar_background"

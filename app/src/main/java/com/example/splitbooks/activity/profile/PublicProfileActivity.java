@@ -1,4 +1,4 @@
-package com.example.splitbooks;
+package com.example.splitbooks.activity.profile;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -15,6 +15,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.splitbooks.DTO.response.ProfileResponse;
+import com.example.splitbooks.R;
+import com.example.splitbooks.activity.auth.MainActivity;
+import com.example.splitbooks.activity.edit.EditGenresActivity;
+import com.example.splitbooks.activity.edit.EditLanguageActivity;
+import com.example.splitbooks.activity.edit.EditProfileActivity;
+import com.example.splitbooks.activity.home.HomePageActivity;
+import com.example.splitbooks.activity.setup.GenreActivity;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
 import com.example.splitbooks.network.JwtManager;

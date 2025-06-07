@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:padding="24dp"
-    tools:context=".MainActivity">
+    tools:context=".activity.auth.MainActivity">
 
     <!-- App Logo -->
     <ImageView

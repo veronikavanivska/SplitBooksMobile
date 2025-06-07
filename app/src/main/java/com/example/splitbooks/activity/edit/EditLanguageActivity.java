@@ -1,10 +1,9 @@
-package com.example.splitbooks;
+package com.example.splitbooks.activity.edit;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -14,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.splitbooks.DTO.request.Language;
 import com.example.splitbooks.DTO.response.ProfileResponse;
+import com.example.splitbooks.activity.profile.PublicProfileActivity;
+import com.example.splitbooks.R;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
 import com.google.android.material.appbar.MaterialToolbar;

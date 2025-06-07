@@ -1,17 +1,23 @@
 package com.example.splitbooks.network;
 
 
+import com.example.splitbooks.DTO.request.BooksSearchRequest;
 import com.example.splitbooks.DTO.request.EditGenres;
 import com.example.splitbooks.DTO.request.EditReadingPreferences;
 import com.example.splitbooks.DTO.request.Genre;
 import com.example.splitbooks.DTO.request.Language;
 import com.example.splitbooks.DTO.request.LoginRequest;
+import com.example.splitbooks.DTO.request.ReviewRequest;
+import com.example.splitbooks.DTO.response.BookDetailResponse;
+import com.example.splitbooks.DTO.response.BookResponse;
+import com.example.splitbooks.DTO.response.BookWithReviewsResponse;
 import com.example.splitbooks.DTO.response.LoginResponse;
 import com.example.splitbooks.DTO.response.ProfileResponse;
 import com.example.splitbooks.DTO.response.ProfileSetupResponse;
 import com.example.splitbooks.DTO.request.ReadingFormat;
 import com.example.splitbooks.DTO.request.RegistrationRequest;
 import com.example.splitbooks.DTO.response.RegistrationResponse;
+import com.example.splitbooks.DTO.response.ReviewResponse;
 import com.example.splitbooks.DTO.response.ShortProfileResponse;
 
 import java.util.List;
@@ -95,5 +101,29 @@ public interface ApiService {
 
     @GET("/api/suggestions/best")
     Call<List<ShortProfileResponse>> getBestFriendSuggestions();
+
+
+    @POST("/api/books/search")
+    Call<BookResponse> searchBooks(
+            @Body BooksSearchRequest request,
+            @Query("startIndex") int startIndex,
+            @Query("maxResults") int maxResults
+    );
+    @GET("/api/books/{volumeId}")
+    Call<BookWithReviewsResponse> getBookById(@Path("volumeId") String volumeId);
+    @POST("/api/books/{volumeId}/addReview")
+    Call<ReviewResponse> addReview(
+            @Path("volumeId") String volumeId,
+            @Body ReviewRequest request
+    );
+    @DELETE("/api/books/removeReview/{reviewId}")
+    Call<Void> deleteReview( @Path("reviewId") Long reviewId);
+
+    @DELETE("/api/books/{volumeId}/remove")
+    Call<String> removeBookFromLibrary(@Path("volumeId") String volumeId);
+
+    @GET("/api/books/mybooks/{profileId}")
+    Call<BookResponse> getBooksByProfileId(@Path("profileId") Long profileId);
+
 
 }

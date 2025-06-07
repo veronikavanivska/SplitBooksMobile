@@ -1,5 +1,6 @@
-package com.example.splitbooks;
+package com.example.splitbooks.activity.search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,13 +12,17 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.splitbooks.DTO.response.ShortProfileResponse;
+import com.example.splitbooks.R;
+import com.example.splitbooks.activity.home.HomePageActivity;
+import com.example.splitbooks.activity.profile.FollowListAdapter;
+import com.example.splitbooks.activity.profile.PublicProfileActivity;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +36,13 @@ public class SearchProfilesActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FollowListAdapter adapter;
     private List<ShortProfileResponse> profileList = new ArrayList<>();
-
-    // New Suggested views
     private TextView textSuggestedTitle;
     private RecyclerView recyclerSuggested;
     private FollowListAdapter suggestedAdapter;
     private List<ShortProfileResponse> suggestedList = new ArrayList<>();
     private ImageView btnClearSearch;
-    private ApiService apiService;
+    private BottomNavigationView bottomNavigation;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,7 +62,31 @@ public class SearchProfilesActivity extends AppCompatActivity {
         suggestedAdapter = new FollowListAdapter(suggestedList);
         recyclerSuggested.setAdapter(suggestedAdapter);
         btnClearSearch = findViewById(R.id.btnClearSearch);
-        apiService = ApiClient.getApiService(getApplicationContext());
+        bottomNavigation = findViewById(R.id.search_bottom_navigation);
+
+        bottomNavigation.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if(id == R.id.action_profile){
+                Intent intent = new Intent(this, PublicProfileActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            }else if(id == R.id.action_home){
+                Intent intent = new Intent(this, HomePageActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            }else if(id == R.id.action_search){
+                onResume();
+                return true;
+            }else if(id == R.id.action_library){
+                Intent intent = new Intent(this, SearchBookActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            }
+            return false;
+        });
 
         loadSuggestedFriends();
 
@@ -87,12 +115,13 @@ public class SearchProfilesActivity extends AppCompatActivity {
         });
 
         btnClearSearch.setOnClickListener(v -> {
-            editSearch.setText(""); // clears the text and triggers reset
-            editSearch.clearFocus(); // optionally close keyboard
+            editSearch.setText("");
+            editSearch.clearFocus();
         });
     }
 
     private void loadSuggestedFriends() {
+        ApiService apiService = ApiClient.getApiService(getApplicationContext());
         Call<List<ShortProfileResponse>> call = apiService.getBestFriendSuggestions();
         call.enqueue(new Callback<List<ShortProfileResponse>>() {
             @Override
@@ -111,7 +140,6 @@ public class SearchProfilesActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<ShortProfileResponse>> call, Throwable t) {
-                // Optionally show error
                 textSuggestedTitle.setVisibility(View.GONE);
                 recyclerSuggested.setVisibility(View.GONE);
             }
@@ -119,6 +147,7 @@ public class SearchProfilesActivity extends AppCompatActivity {
     }
 
     private void searchProfiles(String username) {
+        ApiService apiService = ApiClient.getApiService(getApplicationContext());
         Call<List<ShortProfileResponse>> call = apiService.searchProfiles(username);
         call.enqueue(new Callback<List<ShortProfileResponse>>() {
             @Override

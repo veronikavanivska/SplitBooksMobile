@@ -1,4 +1,4 @@
-package com.example.splitbooks;
+package com.example.splitbooks.activity.edit;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -20,6 +20,8 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.example.splitbooks.DTO.request.EditProfileRequest;
 import com.example.splitbooks.DTO.response.ProfileResponse;
+import com.example.splitbooks.activity.profile.PublicProfileActivity;
+import com.example.splitbooks.R;
 import com.example.splitbooks.helper.CameraHelper;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;

@@ -1,6 +1,5 @@
-package com.example.splitbooks;
+package com.example.splitbooks.activity.auth;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
@@ -17,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.splitbooks.DTO.request.LoginRequest;
 import com.example.splitbooks.DTO.response.LoginResponse;
 import com.example.splitbooks.DTO.response.ProfileResponse;
+import com.example.splitbooks.activity.home.HomePageActivity;
+import com.example.splitbooks.R;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
 import com.example.splitbooks.network.JwtManager;
@@ -127,8 +128,9 @@ public class LoginActivity extends AppCompatActivity {
                     ProfileResponse profile = response.body();
                     if (profile != null) {
                         long profileId = profile.getId();
-
+                        Log.d("LoginActivity", " profile id: " + profileId);
                         JwtManager.saveProfileId(getApplicationContext(),profileId);
+                        Log.d("LoginActivity", "Saved profile: " + JwtManager.getMyProfileId(getApplicationContext()) );
 
                         Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
                         startActivity(intent);

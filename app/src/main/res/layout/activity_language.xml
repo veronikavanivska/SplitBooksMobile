@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:padding="24dp"
-    tools:context=".LanguageActivity">
+    tools:context=".activity.setup.LanguageActivity">
 
     <View
         android:id="@+id/progress_bar_background"

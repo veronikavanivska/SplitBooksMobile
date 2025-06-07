@@ -1,4 +1,4 @@
-package com.example.splitbooks;
+package com.example.splitbooks.activity.setup;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.splitbooks.R;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
 import com.example.splitbooks.DTO.request.Genre;

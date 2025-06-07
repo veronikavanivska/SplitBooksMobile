@@ -26,7 +26,7 @@ public class JwtManager {
         prefs.edit().remove(TOKEN_KEY).apply();
     }
     public static long getMyProfileId(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return prefs.getLong("myProfileId", -1L);
     }
 

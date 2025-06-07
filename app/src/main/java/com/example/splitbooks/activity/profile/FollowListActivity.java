@@ -1,10 +1,8 @@
-package com.example.splitbooks;
+package com.example.splitbooks.activity.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.splitbooks.DTO.response.ShortProfileResponse;
+import com.example.splitbooks.R;
+import com.example.splitbooks.activity.search.SearchProfilesActivity;
+import com.example.splitbooks.activity.home.HomePageActivity;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -53,6 +54,16 @@ public class FollowListActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, PublicProfileActivity.class);
                 startActivity(intent);
                 finish();
+            }else if(id == R.id.action_home){
+                Intent intent = new Intent(this, HomePageActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            }else if(id == R.id.action_search){
+                Intent intent = new Intent(this, SearchProfilesActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
             }
             return false;
         });

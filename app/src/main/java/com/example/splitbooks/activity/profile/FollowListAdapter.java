@@ -1,4 +1,4 @@
-package com.example.splitbooks;
+package com.example.splitbooks.activity.profile;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.splitbooks.DTO.response.ShortProfileResponse;
+import com.example.splitbooks.R;
 
 import java.util.List;
 

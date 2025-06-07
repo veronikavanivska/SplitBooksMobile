@@ -18,24 +18,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SplitBook"
         tools:targetApi="31">
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity"/>
-        <activity android:name=".GenreActivity" />
-        <activity android:name=".LanguageActivity" />
-        <activity android:name=".ReadingFormatActivity" />
-        <activity android:name=".ProfileSetupActivity" />
-        <activity android:name=".HomePageActivity" />
-        <activity android:name=".PublicProfileActivity" />
-        <activity android:name=".EditGenresActivity" />
-        <activity android:name=".EditLanguageActivity" />
-        <activity android:name=".EditReadingFormatActivity" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".FollowListActivity" />
-        <activity android:name=".OtherProfileActivity" />
-        <activity android:name=".SearchProfilesActivity"/>
-
+        <activity android:name=".activity.auth.LoginActivity" />
+        <activity android:name=".activity.auth.RegisterActivity"/>
+        <activity android:name=".activity.setup.GenreActivity" />
+        <activity android:name=".activity.setup.LanguageActivity" />
+        <activity android:name=".activity.setup.ReadingFormatActivity" />
+        <activity android:name=".activity.setup.ProfileSetupActivity" />
+        <activity android:name=".activity.home.HomePageActivity" />
+        <activity android:name=".activity.profile.PublicProfileActivity" />
+        <activity android:name=".activity.edit.EditGenresActivity" />
+        <activity android:name=".activity.edit.EditLanguageActivity" />
+        <activity android:name=".activity.edit.EditReadingFormatActivity" />
+        <activity android:name=".activity.edit.EditProfileActivity" />
+        <activity android:name=".activity.profile.FollowListActivity" />
+        <activity android:name=".activity.profile.OtherProfileActivity" />
+        <activity android:name=".activity.search.SearchProfilesActivity"/>
+        <activity android:name=".activity.search.SearchBookActivity"/>
+        <activity android:name=".activity.search.BookDetailActivity"/>
+        <activity android:name=".activity.search.ProfileBokksActivity"/>
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.auth.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
