@@ -1,19 +1,24 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite">
+    <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:padding="0dp">
 
-    <!-- Your ScrollView -->
     <ScrollView
         android:id="@+id/scrollViewContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/other_bottom_navigation"
         android:padding="16dp"
+        android:visibility="gone"
         android:background="@color/colorWhite">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,7 +55,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.554"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:transitionName="book_cover_transition"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -95,7 +101,6 @@
                 android:textColor="#444444" />
         </androidx.core.widget.NestedScrollView>
 
-        <!-- Buttons for actions -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -157,7 +162,6 @@
 
     </LinearLayout>
 
-
 </ScrollView>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/other_bottom_navigation"
@@ -171,3 +175,13 @@
         app:menu="@drawable/bottom_menu" />
 
 </RelativeLayout>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieLoader"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/load" />
+</FrameLayout>

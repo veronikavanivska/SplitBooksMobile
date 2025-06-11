@@ -7,9 +7,6 @@
     android:background="#FFFFFF"
     android:padding="16dp">
 
-
-
-
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
@@ -52,6 +49,7 @@
                     android:layout_height="100dp"
                     android:layout_marginTop="8dp"
                     android:scaleType="centerCrop"
+                    android:transitionName="profile_avatar"
                     android:src="@drawable/default_avatar"
                     android:contentDescription="Profile Avatar"
                     app:layout_constraintTop_toTopOf="parent"
@@ -71,7 +69,6 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <!-- Followers/Following -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,10 +99,7 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- Follow / Chat / Library buttons -->
 
-
-            <!-- Full Name -->
             <TextView
                 android:id="@+id/full_name"
                 android:layout_width="wrap_content"
@@ -202,7 +196,6 @@
                 </HorizontalScrollView>
             </LinearLayout>
 
-            <!-- LANGUAGES -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -241,7 +234,6 @@
                 </HorizontalScrollView>
             </LinearLayout>
 
-            <!-- FORMATS -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

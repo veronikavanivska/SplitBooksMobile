@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_margin="8dp"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
-    android:radius="12dp">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:strokeWidth="0dp"
+    app:strokeColor="@android:color/transparent">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -12,15 +15,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:background="@color/colorWhite"
-        >
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/book_thumbnail"
             android:layout_width="80dp"
             android:layout_height="100dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/book_education_library_2_svgrepo_com" />
+            android:src="@drawable/book_education_library_2_svgrepo_com"
+            android:clipToOutline="true"
+            android:transitionName="book_cover_transition"/>
 
         <LinearLayout
             android:layout_marginStart="12dp"
@@ -32,18 +36,18 @@
             <TextView
                 android:id="@+id/book_title"
                 android:textStyle="bold"
-                android:textColor="@color/colorBlack"
+                android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/book_author"
-                android:textColor="@color/colorBlack"
+                android:textColor="@android:color/darker_gray"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

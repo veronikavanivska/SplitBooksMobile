@@ -2,22 +2,26 @@ package com.example.splitbooks.network;
 
 
 import com.example.splitbooks.DTO.request.BooksSearchRequest;
+import com.example.splitbooks.DTO.request.CreatePrivateChatRequest;
 import com.example.splitbooks.DTO.request.EditGenres;
 import com.example.splitbooks.DTO.request.EditReadingPreferences;
 import com.example.splitbooks.DTO.request.Genre;
 import com.example.splitbooks.DTO.request.Language;
 import com.example.splitbooks.DTO.request.LoginRequest;
 import com.example.splitbooks.DTO.request.ReviewRequest;
-import com.example.splitbooks.DTO.response.BookDetailResponse;
 import com.example.splitbooks.DTO.response.BookResponse;
 import com.example.splitbooks.DTO.response.BookWithReviewsResponse;
+import com.example.splitbooks.DTO.response.ChatResponse;
 import com.example.splitbooks.DTO.response.LoginResponse;
+import com.example.splitbooks.DTO.response.PageResponse;
 import com.example.splitbooks.DTO.response.ProfileResponse;
 import com.example.splitbooks.DTO.response.ProfileSetupResponse;
 import com.example.splitbooks.DTO.request.ReadingFormat;
 import com.example.splitbooks.DTO.request.RegistrationRequest;
 import com.example.splitbooks.DTO.response.RegistrationResponse;
 import com.example.splitbooks.DTO.response.ReviewResponse;
+import com.example.splitbooks.DTO.response.SendMessageResponse;
+import com.example.splitbooks.DTO.response.ShortChatResponse;
 import com.example.splitbooks.DTO.response.ShortProfileResponse;
 
 import java.util.List;
@@ -37,7 +41,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
-    @POST("api/auth/login")  // Assuming the endpoint is "/login"
+    @POST("api/auth/login")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
 
     @POST("api/auth/register")
@@ -62,6 +66,7 @@ public interface ApiService {
 
     @GET("/api/profile/me")
     Call<ProfileResponse> getProfile();
+
     @Multipart
     @PATCH("/api/profile/edit")
     Call<ResponseBody> editProfile(@Part("data") RequestBody data,
@@ -120,10 +125,48 @@ public interface ApiService {
     Call<Void> deleteReview( @Path("reviewId") Long reviewId);
 
     @DELETE("/api/books/{volumeId}/remove")
-    Call<String> removeBookFromLibrary(@Path("volumeId") String volumeId);
+    Call<ResponseBody> removeBookFromLibrary(@Path("volumeId") String volumeId);
+
+    @POST("/api/books/{volumeId}/add")
+    Call<ResponseBody>  addBookToLibrary(@Path("volumeId") String volumeId);
 
     @GET("/api/books/mybooks/{profileId}")
     Call<BookResponse> getBooksByProfileId(@Path("profileId") Long profileId);
+
+    @GET("/api/chat/allChats")
+    Call<PageResponse<ShortChatResponse>> getAllChats(@Query("page") int page, @Query("size") int size);
+
+    @GET("/api/chat/{chatId}/messages")
+    Call<PageResponse<SendMessageResponse>> getChatMessages(
+            @Path("chatId") Long chatId,
+            @Query("page") int page,
+            @Query("size") int size,
+            @Query("sort") String sort
+    );
+
+    @Multipart
+    @POST("/api/chat/group")
+    Call<ChatResponse> createGroupChat(
+            @Part("data") RequestBody data,
+            @Part MultipartBody.Part file
+    );
+
+    @POST("/api/chat/private")
+    Call<ChatResponse> createPrivateChat(
+            @Body CreatePrivateChatRequest request);
+
+    @GET("/api/chat/{chatId}")
+    Call<ChatResponse> getChatInfo(@Path("chatId") Long chatId);
+
+    @DELETE("/api/chat/{chatId}")
+    Call<Void> deleteChat(@Path("chatId") Long chatId);
+
+    @PATCH("/api/chat/{chatId}")
+    Call<Void>  updateChat(
+            @Path("chatId") Long chatId,
+            @Part("name") RequestBody name,
+            @Part MultipartBody.Part file
+    );
 
 
 }

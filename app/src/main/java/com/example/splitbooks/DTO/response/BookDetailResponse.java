@@ -23,6 +23,7 @@ public class BookDetailResponse {
         private List<String> categories;
         private ImageLinks imageLinks;
         private String language;
+        private Boolean isInLibrary;
     }
 
     @Data

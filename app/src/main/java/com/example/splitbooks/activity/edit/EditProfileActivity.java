@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -131,6 +132,8 @@ public class EditProfileActivity extends AppCompatActivity {
             String lastName = lastField.getText().toString().trim();
             String phone = phoneField.getText().toString().trim();
             String pubUsername = usernamePublicField.getText().toString().trim();
+
+
             if (isAnonymous && username.isEmpty()) {
                 Toast.makeText(this, "Username is required for anonymous profiles", Toast.LENGTH_SHORT).show();
                 return;

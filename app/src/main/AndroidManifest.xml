@@ -36,6 +36,11 @@
         <activity android:name=".activity.search.SearchBookActivity"/>
         <activity android:name=".activity.search.BookDetailActivity"/>
         <activity android:name=".activity.search.ProfileBokksActivity"/>
+        <activity android:name=".activity.chats.AllChatsActivity"/>
+        <activity android:name=".activity.chats.ChatActivity"/>
+        <activity android:name=".activity.chats.CreateGroupChatActivity"/>
+        <activity android:name=".activity.chats.ChatInfoActivity"/>
+        <activity android:name=".activity.profile.FullscreenAvatarActivity"/>
         <activity
             android:name=".activity.auth.MainActivity"
             android:exported="true">

@@ -77,6 +77,7 @@
             android:inputType="text"
             android:popupBackground="@color/colorWhite"
             android:textColorHint="@color/dark_green"
+            android:textColor="@color/colorBlack"
             android:textCursorDrawable="@color/dark_green" />
 
     </com.google.android.material.textfield.TextInputLayout>

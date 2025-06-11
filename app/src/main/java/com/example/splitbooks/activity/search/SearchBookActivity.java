@@ -1,5 +1,6 @@
     package com.example.splitbooks.activity.search;
 
+    import android.app.ActivityOptions;
     import android.content.Intent;
     import android.os.Bundle;
     import android.text.Editable;
@@ -28,10 +29,12 @@
     import com.example.splitbooks.DTO.request.SearchType;
     import com.example.splitbooks.DTO.response.BookResponse;
     import com.example.splitbooks.R;
+    import com.example.splitbooks.activity.chats.AllChatsActivity;
     import com.example.splitbooks.activity.home.HomePageActivity;
     import com.example.splitbooks.activity.profile.PublicProfileActivity;
     import com.example.splitbooks.network.ApiClient;
     import com.example.splitbooks.network.ApiService;
+    import com.example.splitbooks.network.JwtManager;
     import com.google.android.material.bottomnavigation.BottomNavigationView;
 
     import java.util.ArrayList;
@@ -58,11 +61,12 @@
         private TextView btnSearchBooks, btnMyLibrary, textQuote ;
         private BottomNavigationView bottomNavigation;
         private ApiService apiService;
-
+        private Long profileId;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.search_books_layout);
+
 
             btnSearchBooks = findViewById(R.id.btnSearchBooks);
             btnMyLibrary = findViewById(R.id.btnMyLibrary);
@@ -73,6 +77,7 @@
             apiService = ApiClient.getApiService(getApplicationContext());
             textQuote = findViewById(R.id.textQuote);
             bottomNavigation = findViewById(R.id.search_bottom_navigation);
+
             bottomNavigation.setOnItemSelectedListener(item -> {
                 int id = item.getItemId();
                 if(id == R.id.action_profile){
@@ -93,11 +98,16 @@
                 }else if(id == R.id.action_library){
                     onResume();
                     return true;
+                }else if(id == R.id.action_chats){
+                    Intent intent = new Intent(this, AllChatsActivity.class);
+                    startActivity(intent);
+                    finish();
+                    return true;
                 }
                 return false;
             });
 
-
+            profileId = JwtManager.getMyProfileId(getApplicationContext());
             ArrayAdapter<SearchType> adapter = new ArrayAdapter<>(
                     this, android.R.layout.simple_spinner_item, SearchType.values());
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -116,11 +126,17 @@
             });
 
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            bookAdapter = new BookAdapter(new ArrayList<>(), book -> {
+            bookAdapter = new BookAdapter(new ArrayList<>(), (bookItem, sharedImageView) -> {
                 Intent intent = new Intent(this, BookDetailActivity.class);
-                intent.putExtra("volumeId", book.getId() );
-                startActivity(intent);
+                intent.putExtra("volumeId", bookItem.getId());
 
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(
+                        this,
+                        sharedImageView,
+                        "book_cover_transition"
+                );
+
+                startActivity(intent, options.toBundle());
             });
             recyclerView.setAdapter(bookAdapter);
 
@@ -131,6 +147,7 @@
                 btnMyLibrary.setSelected(true);
                 btnSearchBooks.setSelected(false);
                 Intent intent = new Intent(this, ProfileBokksActivity.class);
+                intent.putExtra("profileId", profileId);
                 startActivity(intent);
 
 
@@ -139,6 +156,7 @@
             btnSearchBooks.setOnClickListener(v -> {
                 btnMyLibrary.setSelected(false);
                 Intent intent = new Intent(this, SearchBookActivity.class);
+
                 startActivity(intent);
 
             });
@@ -146,7 +164,7 @@
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(@NonNull RecyclerView rv, int dx, int dy) {
-                    if (dy > 0) { // scrolling down
+                    if (dy > 0) {
                         LinearLayoutManager lm = (LinearLayoutManager) rv.getLayoutManager();
                         if (lm == null) return;
 
@@ -154,7 +172,6 @@
                         int totalCount = lm.getItemCount();
                         int firstVisible = lm.findFirstVisibleItemPosition();
 
-                        // Trigger loading more when we are near the end (e.g. 3 items before end)
                         if (!isLoading && !isLastPage) {
                             if ((visibleCount + firstVisible) >= totalCount - 3) {
                                 performBookSearch(lastQuery, false);

@@ -1,5 +1,6 @@
 package com.example.splitbooks.activity.search;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,7 @@ import com.example.splitbooks.DTO.response.BookDetailResponse;
 import com.example.splitbooks.DTO.response.BookWithReviewsResponse;
 import com.example.splitbooks.DTO.response.ReviewResponse;
 import com.example.splitbooks.R;
+import com.example.splitbooks.activity.chats.AllChatsActivity;
 import com.example.splitbooks.activity.home.HomePageActivity;
 import com.example.splitbooks.activity.profile.PublicProfileActivity;
 import com.example.splitbooks.network.ApiClient;
@@ -35,6 +39,7 @@ import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,9 +53,12 @@ public class BookDetailActivity extends AppCompatActivity {
     private ReviewAdapter reviewAdapter;
     private Button btnAddReview;
     private MaterialButton btn_back;
-
+    private Button btnAddToLibrary;
+    private boolean isInLibrary = false;
     private BottomNavigationView bottomNavigation;
+    private com.airbnb.lottie.LottieAnimationView lottieLoader;
 
+    ScrollView scrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +73,14 @@ public class BookDetailActivity extends AppCompatActivity {
         bottomNavigation = findViewById(R.id.other_bottom_navigation);
         btnAddReview.setOnClickListener(v -> showAddReviewDialog(null));
         btn_back = findViewById(R.id.btn_back);
+        btnAddToLibrary = findViewById(R.id.btnAddToLibrary);
+        lottieLoader = findViewById(R.id.lottieLoader);
+        scrollView = findViewById(R.id.scrollViewContent);
+        lottieLoader = findViewById(R.id.lottieLoader);
+        scrollView = findViewById(R.id.scrollViewContent);
+
+
+
         rvReviews.setLayoutManager(new LinearLayoutManager(this));
         reviewAdapter = new ReviewAdapter(new ArrayList<>(), new ReviewAdapter.OnReviewReplyClickListener() {
             @Override
@@ -87,11 +103,7 @@ public class BookDetailActivity extends AppCompatActivity {
         });
 
         volumeId = getIntent().getStringExtra("volumeId");
-        if (volumeId == null || volumeId.isEmpty()) {
-            Toast.makeText(this, "Invalid book ID", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
+
 
         if (volumeId != null) {
             loadBookDetails(volumeId);
@@ -99,6 +111,15 @@ public class BookDetailActivity extends AppCompatActivity {
             Toast.makeText(this, "Invalid book ID", Toast.LENGTH_SHORT).show();
             finish();
         }
+
+        btnAddToLibrary.setOnClickListener(v -> {
+            if (!isInLibrary) {
+                addBookToLibrary();
+            }else {
+                deleteBookFromLibrary(volumeId);
+            }
+        });
+
 
         bottomNavigation.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -122,6 +143,11 @@ public class BookDetailActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return true;
+            }else if(id == R.id.action_chats){
+                Intent intent = new Intent(this, AllChatsActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
             }
             return false;
         });
@@ -129,13 +155,25 @@ public class BookDetailActivity extends AppCompatActivity {
 
     }
 
+    private void showLoading() {
+        lottieLoader.setVisibility(View.VISIBLE);
+        scrollView.setVisibility(View.GONE);
+    }
+
+    private void hideLoading() {
+        lottieLoader.setVisibility(View.GONE);
+        scrollView.setVisibility(View.VISIBLE);
+    }
     private void loadBookDetails(String volumeId) {
+        showLoading();
         ApiService apiService = ApiClient.getApiService(getApplicationContext());
         Call<BookWithReviewsResponse> call = apiService.getBookById(volumeId);
         call.enqueue(new Callback<BookWithReviewsResponse>() {
             @Override
             public void onResponse(Call<BookWithReviewsResponse> call, Response<BookWithReviewsResponse> response) {
+                hideLoading();
                 if (response.isSuccessful() && response.body() != null) {
+
                     BookDetailResponse book = response.body().getBook();
                     List<ReviewResponse> reviews = response.body().getReviews();
 
@@ -147,7 +185,8 @@ public class BookDetailActivity extends AppCompatActivity {
                     String rawDescription = book.getVolumeInfo().getDescription();
                     Spanned cleanTeks = rawDescription == null  ? null :  Html.fromHtml(rawDescription, Html.FROM_HTML_MODE_LEGACY) ;
                     tvDescription.setText(cleanTeks != null ? cleanTeks : "No description available");
-
+                    isInLibrary = book.getVolumeInfo().getIsInLibrary();
+                    updateLibraryButton();
                     String thumbnail = book.getVolumeInfo().getImageLinks() != null
                             ? book.getVolumeInfo().getImageLinks().getThumbnail()
                             : null;
@@ -172,6 +211,21 @@ public class BookDetailActivity extends AppCompatActivity {
                 Toast.makeText(BookDetailActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private void updateLibraryButton() {
+        if (isInLibrary) {
+            btnAddToLibrary.setText("Delete from Library");
+            btnAddToLibrary.setEnabled(true);
+            btnAddToLibrary.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
+
+        } else {
+            btnAddToLibrary.setText("Add to Library");
+            btnAddToLibrary.setEnabled(true);
+            btnAddToLibrary.setBackgroundColor(getResources().getColor(R.color.dark_green));
+
+        }
     }
     private void showAddReviewDialog(@Nullable Long parentReviewId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -264,6 +318,52 @@ public class BookDetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Toast.makeText(BookDetailActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void addBookToLibrary() {
+        ApiService apiService = ApiClient.getApiService(getApplicationContext());
+        Call<ResponseBody> call = apiService.addBookToLibrary(volumeId);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(BookDetailActivity.this, "Book added to library", Toast.LENGTH_SHORT).show();
+                    isInLibrary = true;
+                    updateLibraryButton();
+
+                } else {
+                    Toast.makeText(BookDetailActivity.this, "Failed to add book", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(BookDetailActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void deleteBookFromLibrary(String volumeId) {
+        ApiService apiService = ApiClient.getApiService(getApplicationContext());
+        Call<ResponseBody> call = apiService.removeBookFromLibrary(volumeId);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    isInLibrary = false;
+                    updateLibraryButton();
+                    Toast.makeText(BookDetailActivity.this, "Book removed", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    Toast.makeText(BookDetailActivity.this, "Error: " + response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(BookDetailActivity.this, "Failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.splitbooks"
-        minSdk = 30
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -38,6 +38,17 @@ android {
 }
 
 dependencies {
+
+    implementation ("org.java-websocket:Java-WebSocket:1.5.1")
+    implementation ("com.airbnb.android:lottie:6.4.0")
+    implementation ("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.1")
+    implementation ("com.google.code.gson:gson:2.10.1")
+    implementation ("io.reactivex.rxjava2:rxjava:2.2.21")
+    implementation ("io.reactivex.rxjava2:rxandroid:2.1.1")
+    implementation ("com.github.yuyakaido:CardStackView:v2.3.4")
+    implementation ("com.github.chrisbanes:PhotoView:2.3.0")
+
     compileOnly ("org.projectlombok:lombok:1.18.32")
     annotationProcessor ("org.projectlombok:lombok:1.18.32")
     implementation (libs.glide)

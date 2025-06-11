@@ -89,6 +89,7 @@
             android:dropDownVerticalOffset="8dp"
             android:inputType="text"
             android:popupBackground="@color/colorWhite"
+            android:textColor="@color/colorBlack"
             android:textColorHint="@color/dark_green"
             android:textCursorDrawable="@color/dark_green" />
 

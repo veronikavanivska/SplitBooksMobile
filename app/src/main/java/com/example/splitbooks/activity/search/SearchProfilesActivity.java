@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.splitbooks.DTO.response.ShortProfileResponse;
 import com.example.splitbooks.R;
+import com.example.splitbooks.activity.chats.AllChatsActivity;
 import com.example.splitbooks.activity.home.HomePageActivity;
 import com.example.splitbooks.activity.profile.FollowListAdapter;
 import com.example.splitbooks.activity.profile.PublicProfileActivity;
@@ -81,6 +82,11 @@ public class SearchProfilesActivity extends AppCompatActivity {
                 return true;
             }else if(id == R.id.action_library){
                 Intent intent = new Intent(this, SearchBookActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            }else if(id == R.id.action_chats){
+                Intent intent = new Intent(this, AllChatsActivity.class);
                 startActivity(intent);
                 finish();
                 return true;

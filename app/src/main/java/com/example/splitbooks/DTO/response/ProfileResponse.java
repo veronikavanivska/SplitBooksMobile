@@ -25,6 +25,7 @@ public class ProfileResponse {
     private boolean hasAnonymous ;
     private boolean setupCompleted;
     private boolean anonymous;
+    private boolean registeredInGame;
 
 
 }

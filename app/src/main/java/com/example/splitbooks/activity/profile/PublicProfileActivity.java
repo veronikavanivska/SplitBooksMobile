@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.splitbooks.DTO.response.ProfileResponse;
@@ -87,6 +88,19 @@ public class PublicProfileActivity extends AppCompatActivity {
             startActivity(new Intent(this, EditLanguageActivity.class));
             finish();
         });
+        avatarImage.setOnClickListener(v -> {
+            Intent intent = new Intent(this, FullscreenAvatarActivity.class);
+            intent.putExtra("avatarUrl", avatarImage.getTag().toString());
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    this,
+                    avatarImage,
+                    avatarImage.getTransitionName()
+            );
+            startActivity(intent, options.toBundle());
+        });
+
+
+
 
         bottomNavigation.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -178,11 +192,12 @@ public class PublicProfileActivity extends AppCompatActivity {
                         switchItem.setIcon(R.drawable.anonymous_user_icon);
                     }
 
-                    populateChips(genresContainer, profile.getGenreNames());
-                    populateChips(languagesContainer, profile.getLanguageNames());
-                    populateChips(formatsContainer, profile.getFormatNames());
+                    populateChips(genresContainer, profile.getGenreNames(),profile.isAnonymous());
+                    populateChips(languagesContainer, profile.getLanguageNames(),profile.isAnonymous());
+                    populateChips(formatsContainer, profile.getFormatNames(),profile.isAnonymous());
 
                     if (profile.getAvatarUrl() != null && !profile.getAvatarUrl().isEmpty()) {
+                        avatarImage.setTag(profile.getAvatarUrl());
                         Glide.with(PublicProfileActivity.this)
                                 .load(profile.getAvatarUrl())
                                 .placeholder(R.drawable.default_avatar)
@@ -200,6 +215,7 @@ public class PublicProfileActivity extends AppCompatActivity {
             }
         });
     }
+
     private void toggleToAnonymousThenSetup() {
         ApiService apiService = ApiClient.getApiService(getApplicationContext());
         apiService.toggleProfile().enqueue(new Callback<ResponseBody>() {
@@ -261,17 +277,24 @@ public class PublicProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void populateChips(ChipGroup container, List<String> items) {
+    private void populateChips(ChipGroup container, List<String> items,boolean dimmed) {
         container.removeAllViews();
         if (items != null) {
             for (String item : items) {
                 Chip chip = new Chip(this);
                 chip.setText(item);
                 chip.setTextColor(Color.BLACK);
-                chip.setChipBackgroundColor(ColorStateList.valueOf(Color.WHITE));
-                chip.setChipStrokeColor(ColorStateList.valueOf(Color.parseColor("#006400")));
+                if (dimmed) {
+                    chip.setTextColor(Color.parseColor("#777777"));
+                    chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#EEEEEE")));
+                    chip.setChipStrokeColor(ColorStateList.valueOf(Color.parseColor("#006400")));
+                } else {
+                    chip.setTextColor(Color.BLACK);
+                    chip.setChipBackgroundColor(ColorStateList.valueOf(Color.WHITE));
+                    chip.setChipStrokeColor(ColorStateList.valueOf(Color.parseColor("#006400")));
+                }
                 chip.setChipStrokeWidth(2f);
-                chip.setCloseIconTint(ColorStateList.valueOf(Color.parseColor("#4CAF50")));
+
                 chip.setClickable(false);
                 chip.setCheckable(false);
                 container.addView(chip);

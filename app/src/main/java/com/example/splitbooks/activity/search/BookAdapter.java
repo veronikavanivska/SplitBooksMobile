@@ -1,5 +1,6 @@
 package com.example.splitbooks.activity.search;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import java.util.List;
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
 
     public interface OnBookClickListener {
-        void onBookClick(BookResponse.Item book);
+        void onBookClick(BookResponse.Item book, ImageView image);
     }
 
     private final List<BookResponse.Item> books;
@@ -56,9 +57,16 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         BookResponse.VolumeInfo info = book.getVolumeInfo();
 
         holder.title.setText(info.getTitle());
-        holder.author.setText(info.getAuthors() != null ?
-                String.join(", ", info.getAuthors()) : "Unknown Author");
+        List<String> authors = info.getAuthors();
 
+        String authorsText;
+        if (authors == null || authors.isEmpty()) {
+            authorsText = "Unknown Author";
+        } else {
+            authorsText = TextUtils.join(", ", authors);
+        }
+
+        holder.author.setText(authorsText);
         if (info.getImageLinks() != null && info.getImageLinks().getThumbnail() != null) {
             Glide.with(holder.itemView.getContext())
                     .load(info.getImageLinks().getThumbnail())
@@ -70,9 +78,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onBookClick(book);
+                listener.onBookClick(book, holder.thumbnail);
             }
         });
+
     }
 
     @Override
@@ -90,5 +99,15 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             title = itemView.findViewById(R.id.book_title);
             author = itemView.findViewById(R.id.book_author);
         }
+    }
+
+    public BookResponse.Item getBookAtPosition(int position) {
+        return books.get(position);
+    }
+
+    public void removeBook(int position) {
+        books.remove(position);
+        notifyItemRemoved(position);
+
     }
 }

@@ -9,7 +9,7 @@
     android:padding="24dp"
     tools:context=".activity.auth.MainActivity">
 
-    <!-- App Logo -->
+
     <ImageView
         android:id="@+id/app_logo"
         android:layout_width="321dp"
@@ -23,7 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Welcome Header -->
+
     <TextView
         android:id="@+id/welcome_header"
         android:layout_width="wrap_content"

@@ -15,6 +15,7 @@ import com.example.splitbooks.R;
 import com.example.splitbooks.network.ApiClient;
 import com.example.splitbooks.network.ApiService;
 import com.example.splitbooks.DTO.request.Genre;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -33,6 +34,8 @@ public class GenreActivity extends AppCompatActivity {
     private ChipGroup chipGroupGenres;
     private Button next , back;
 
+    private MaterialToolbar back_arrow_genre;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +45,7 @@ public class GenreActivity extends AppCompatActivity {
         autoCompleteGenre = findViewById(R.id.auto_complete_genre);
         chipGroupGenres = findViewById(R.id.chip_group_selected_genre);
         next = findViewById(R.id.next_button);
+        back_arrow_genre = findViewById(R.id.back_arrow_genre);
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
         autoCompleteGenre.setAdapter(adapter);
@@ -68,7 +72,7 @@ public class GenreActivity extends AppCompatActivity {
             intent.putIntegerArrayListExtra("selectedGenreIds", new ArrayList<>(selectedGenreIds));
             intent.putExtras(getIntent());
             startActivity(intent);
-            finish();
+
         });
 
         loadGenresFromApi();

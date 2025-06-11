@@ -1,6 +1,7 @@
 package com.example.splitbooks.activity.auth;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -8,6 +9,8 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.splitbooks.R;
+import com.example.splitbooks.activity.home.HomePageActivity;
+import com.example.splitbooks.network.JwtManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,5 +29,18 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+        String token = JwtManager.getToken(this);
+        if (token != null && !token.isEmpty()) {
+
+            startActivity(new Intent(this, HomePageActivity.class));
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            finish();
+
+        } else {
+
+            startActivity(new Intent(this, LoginActivity.class));
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            finish();
+        }
     }
 }

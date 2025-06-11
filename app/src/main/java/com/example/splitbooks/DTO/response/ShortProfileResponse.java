@@ -12,6 +12,6 @@ public class ShortProfileResponse {
     private Long id;
     private String username;
     private String avatarUrl;
-
+    private ProfileType type;
 
 }

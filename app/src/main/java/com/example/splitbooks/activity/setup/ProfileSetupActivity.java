@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -126,12 +127,13 @@ public class ProfileSetupActivity extends AppCompatActivity {
             String name = nameField.getText().toString().trim();
             String lastName = lastField.getText().toString().trim();
             String phone = phoneField.getText().toString().trim();
+
             if (isAnonymous && username.isEmpty()) {
                 Toast.makeText(this, "Username is required for anonymous profiles", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            if (!isAnonymous && (name.isEmpty() || lastName.isEmpty())) {
+            if (!isAnonymous && (name.isEmpty() || lastName.isEmpty()  )) {
                 Toast.makeText(this, "Please fill name and lastname fields", Toast.LENGTH_SHORT).show();
             } else {
                 List<Long> genresLong = selectedGenres.stream()

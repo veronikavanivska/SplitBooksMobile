@@ -88,10 +88,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             String formattedDate = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
             holder.tvDate.setText(formattedDate);
         } catch (Exception e) {
-            holder.tvDate.setText(review.getCreatedAt());  // fallback: raw string
+            holder.tvDate.setText(review.getCreatedAt());
         }
 
-        // Set indentation padding (40px per indent level)
         int indentPx = item.indentLevel * 40;
         holder.itemView.setPadding(indentPx,
                 holder.itemView.getPaddingTop(),

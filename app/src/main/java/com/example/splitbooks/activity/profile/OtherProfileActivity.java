@@ -4,17 +4,25 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 
 import com.bumptech.glide.Glide;
+import com.example.splitbooks.DTO.request.CreatePrivateChatRequest;
+import com.example.splitbooks.DTO.response.ChatResponse;
 import com.example.splitbooks.DTO.response.ProfileResponse;
 import com.example.splitbooks.R;
+import com.example.splitbooks.activity.chats.AllChatsActivity;
+import com.example.splitbooks.activity.chats.ChatActivity;
+import com.example.splitbooks.activity.search.ProfileBokksActivity;
 import com.example.splitbooks.activity.search.SearchBookActivity;
 import com.example.splitbooks.activity.search.SearchProfilesActivity;
 import com.example.splitbooks.activity.home.HomePageActivity;
@@ -86,12 +94,22 @@ public class OtherProfileActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return true;
+            }else if(id == R.id.action_chats){
+                Intent intent = new Intent(this, AllChatsActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
             }
             return false;
         });
 
         myProfileId = JwtManager.getMyProfileId(getApplicationContext());
         profileId = getIntent().getLongExtra("profileId", -1);
+        String transitionName = getIntent().getStringExtra("transitionName");
+        if (transitionName != null) {
+            avatarImage.setTransitionName(transitionName);
+        }
+
 
         boolean isOwnProfile = profileId.equals(myProfileId);
         if (isOwnProfile) {
@@ -100,6 +118,16 @@ public class OtherProfileActivity extends AppCompatActivity {
             library.setVisibility(View.GONE);
         }
 
+        chat.setOnClickListener(v->{
+            if (profileId != null) {
+                createOrGoToPrivateChat(profileId);
+            }
+        });
+        library.setOnClickListener(v->{
+            Intent intent = new Intent(this, ProfileBokksActivity.class);
+            intent.putExtra("profileId", profileId);
+            startActivity(intent);
+        });
         followersText.setOnClickListener(v -> {
             Intent intent = new Intent(this, FollowListActivity.class);
             intent.putExtra("profileId", profileId);
@@ -113,18 +141,57 @@ public class OtherProfileActivity extends AppCompatActivity {
             intent.putExtra("isFollowers", false);
             startActivity(intent);
         });
-
+        avatarImage.setOnClickListener(v -> {
+            Intent intent = new Intent(this, FullscreenAvatarActivity.class);
+            intent.putExtra("avatarUrl", avatarImage.getTag().toString());
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    this,
+                    avatarImage,
+                    avatarImage.getTransitionName()
+            );
+            startActivity(intent, options.toBundle());
+        });
         follow.setOnClickListener(v -> toggleFollow());
 
-        back.setOnClickListener(view -> {
-            finish();
-        });
+        back.setOnClickListener(v -> supportFinishAfterTransition());
         fetchProfile();
         checkIfFollowing();
 
     }
 
+    private void createOrGoToPrivateChat(Long otherParticipantId) {
+        CreatePrivateChatRequest request = new CreatePrivateChatRequest(otherParticipantId);
+        ApiService apiService = ApiClient.getApiService(getApplicationContext());
 
+        Call<ChatResponse> call = apiService.createPrivateChat(request);
+        call.enqueue(new Callback<ChatResponse>() {
+            @Override
+            public void onResponse(Call<ChatResponse> call, Response<ChatResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ChatResponse chat = response.body();
+                    String chatName = usernameText.getText().toString();
+                    String chatPhotoUrl = "";
+
+                    Object tag = avatarImage.getTag();
+                    if (tag != null) {
+                        chatPhotoUrl = tag.toString();
+                    }
+                    Intent intent = new Intent(OtherProfileActivity.this, ChatActivity.class);
+                    intent.putExtra("chatId", chat.getChatId());
+                    intent.putExtra("chatName",chatName);
+                    intent.putExtra("chatPhoto", chatPhotoUrl);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(OtherProfileActivity.this, "Failed to open chat", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ChatResponse> call, Throwable t) {
+                Toast.makeText(OtherProfileActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     private void fetchProfile(){
         ApiService apiService = ApiClient.getApiService(getApplicationContext());
         apiService.getProfileById(profileId).enqueue(new Callback<ProfileResponse>() {
@@ -142,16 +209,27 @@ public class OtherProfileActivity extends AppCompatActivity {
                     fullNameText.setText(firstName + " " + lastName);
                     phoneNumberText.setText(phone);
 
-                    populateChips(genresContainer, profile.getGenreNames());
-                    populateChips(languagesContainer, profile.getLanguageNames());
-                    populateChips(formatsContainer, profile.getFormatNames());
+                    populateChips(genresContainer, profile.getGenreNames(),profile.isAnonymous());
+                    populateChips(languagesContainer, profile.getLanguageNames(),profile.isAnonymous());
+                    populateChips(formatsContainer, profile.getFormatNames(),profile.isAnonymous());
 
                     if (profile.getAvatarUrl() != null && !profile.getAvatarUrl().isEmpty()) {
+                        avatarImage.setTag(profile.getAvatarUrl());
+                        postponeEnterTransition();
                         Glide.with(OtherProfileActivity.this)
                                 .load(profile.getAvatarUrl())
                                 .placeholder(R.drawable.default_avatar)
                                 .circleCrop()
                                 .into(avatarImage);
+
+                        avatarImage.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                            @Override
+                            public boolean onPreDraw() {
+                                avatarImage.getViewTreeObserver().removeOnPreDrawListener(this);
+                                supportStartPostponedEnterTransition();
+                                return true;
+                            }
+                        });
                     }
                 }
             }
@@ -231,17 +309,22 @@ public class OtherProfileActivity extends AppCompatActivity {
     }
 
 
-    private void populateChips(ChipGroup container, List<String> items) {
+    private void populateChips(ChipGroup container, List<String> items,boolean dimmed) {
         container.removeAllViews();
         if (items != null) {
             for (String item : items) {
                 Chip chip = new Chip(this);
                 chip.setText(item);
-                chip.setTextColor(Color.BLACK);
-                chip.setChipBackgroundColor(ColorStateList.valueOf(Color.WHITE));
-                chip.setChipStrokeColor(ColorStateList.valueOf(Color.parseColor("#006400")));
+                if (dimmed) {
+                    chip.setTextColor(Color.parseColor("#777777"));
+                    chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#EEEEEE")));
+                    chip.setChipStrokeColor(ColorStateList.valueOf(Color.parseColor("#006400")));
+                } else {
+                    chip.setTextColor(Color.BLACK);
+                    chip.setChipBackgroundColor(ColorStateList.valueOf(Color.WHITE));
+                    chip.setChipStrokeColor(ColorStateList.valueOf(Color.parseColor("#006400")));
+                }
                 chip.setChipStrokeWidth(2f);
-                chip.setCloseIconTint(ColorStateList.valueOf(Color.parseColor("#4CAF50")));
                 chip.setClickable(false);
                 chip.setCheckable(false);
                 container.addView(chip);

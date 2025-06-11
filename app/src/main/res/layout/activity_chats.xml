@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/back_arrow_follow"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:backgroundTint="@color/dark_green"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+        app:title="Chats"
+        app:titleTextColor="@color/colorBlack"
+ />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/dark_green"
+
+        android:layout_below="@id/back_arrow_follow" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewChats"
+        android:layout_width="match_parent"
+        android:layout_height="780dp"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="@color/colorWhite"
+        android:clipToPadding="false"
+        android:padding="16dp" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCreateGroupChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="92dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/plus_large_svgrepo_com"
+        android:contentDescription="create_group_chat"
+        app:tint="@android:color/white" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/other_bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:layout_gravity="bottom"
+        android:background="@color/colorWhite"
+        app:itemIconSize="32dp"
+        app:itemIconTint="@color/colorBlack"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@drawable/bottom_menu" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
